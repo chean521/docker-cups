@@ -1,0 +1,72 @@
+FROM debian:buster-slim
+
+LABEL maintainer="Maykon H Facincani <maykon.facincani@uftm.edu.br>"
+LABEL version="2.0"
+LABEL description="CUPS Ready to SiMPres Backend"
+
+# Install Packages (basic tools, cups, basic drivers, HP drivers)
+RUN apt-get update \
+&& apt-get install -y \
+  sudo \
+  whois \
+  cups \
+  cups-client \
+  cups-bsd \
+  cups-filters \
+  foomatic-db-compressed-ppds \
+  printer-driver-all \
+  openprinting-ppds \
+  hpijs-ppds \
+  hp-ppd \
+  hplip \
+  build-essential \
+  python \
+  snmp \
+  python-pil \
+  libpqxx-6.2 \
+  fontconfig \
+  fonts-liberation \
+&& apt-get clean \
+&& rm -rf /var/lib/apt/lists/*
+
+# Add user and disable sudo password checking
+RUN useradd \
+  --groups=sudo,lp,lpadmin \
+  --create-home \
+  --home-dir=/home/print \
+  --shell=/bin/bash \
+  --password=$(mkpasswd print) \
+  print \
+&& sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
+
+# Configure the service's to be reachable
+RUN /usr/sbin/cupsd \
+  && while [ ! -f /var/run/cups/cupsd.pid ]; do sleep 1; done \
+  && cupsctl --remote-admin --remote-any --share-printers \
+  && kill $(cat /var/run/cups/cupsd.pid)
+
+RUN sed -i 's/.*enable\-dbus=.*/enable\-dbus\=no/' /etc/avahi/avahi-daemon.conf
+
+ADD files/main.sh /root/main.sh
+ADD files/dummy /usr/lib/cups/backend/dummy
+ADD files/pkpgcounter-3.50.tar.gz /root/pkpgcounter-3.50.tar.gz
+
+RUN cd /root && \
+    cd pkpgcounter-3.50.tar.gz && \
+    cd pkpgcounter-3.50 && \
+    python setup.py install
+
+RUN chmod 700 /usr/lib/cups/backend/dummy
+RUN chown root:root /usr/lib/cups/backend/dummy
+RUN chmod +x /root/main.sh
+
+VOLUME /etc/cups
+VOLUME /mnt/backends
+VOLUME /mnt/drivers
+VOLUME /var/log/cups
+VOLUME /var/spool/cups
+
+EXPOSE 631
+
+CMD ["/root/main.sh"]
+
