@@ -65,6 +65,7 @@ RUN chmod +x /root/main.sh
 RUN mkdir /etc/cups.orig
 RUN cp -rap /etc/cups/* /etc/cups.orig/.
 
+
 VOLUME /etc/cups
 VOLUME /mnt/backends
 VOLUME /mnt/drivers
