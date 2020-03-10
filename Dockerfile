@@ -51,6 +51,8 @@ ADD files/main.sh /root/main.sh
 ADD files/dummy /usr/lib/cups/backend/dummy
 ADD files/pkpgcounter-3.50.tar.gz /root/pkpgcounter-3.50.tar.gz
 
+ADD files/cups /etc/cups
+
 RUN cd /root && \
     cd pkpgcounter-3.50.tar.gz && \
     cd pkpgcounter-3.50 && \
@@ -59,6 +61,9 @@ RUN cd /root && \
 RUN chmod 700 /usr/lib/cups/backend/dummy
 RUN chown root:root /usr/lib/cups/backend/dummy
 RUN chmod +x /root/main.sh
+
+RUN mkdir /etc/cups.orig
+RUN cp -rap /etc/cups/* /etc/cups.orig/.
 
 VOLUME /etc/cups
 VOLUME /mnt/backends
