@@ -1,3 +1,5 @@
+![Docker Pulls](https://img.shields.io/docker/pulls/kaneymhf/docker-cups) [![](https://images.microbadger.com/badges/image/kaneymhf/docker-cups.svg)](https://microbadger.com/images/kaneymhf/docker-cups "Get your own image badge on microbadger.com") ![Docker Stars](https://img.shields.io/docker/stars/kaneymhf/docker-cups) [![](https://images.microbadger.com/badges/version/kaneymhf/docker-cups.svg)](https://microbadger.com/images/kaneymhf/docker-cups "Get your own version badge on microbadger.com") 
+
 # CUPS print server image
 
 ## Overview
