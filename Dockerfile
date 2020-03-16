@@ -60,7 +60,6 @@ RUN cd /root && \
 
 RUN ln -sf /usr/local/bin/pkpgcounter /usr/bin/pkpgcounter
 
-
 RUN chmod 700 /usr/lib/cups/backend/dummy
 RUN chown root:root /usr/lib/cups/backend/dummy
 RUN chmod +x /root/main.sh
