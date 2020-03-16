@@ -58,6 +58,8 @@ RUN cd /root && \
     cd pkpgcounter-3.50 && \
     python setup.py install
 
+RUN ln -sf /usr/bin/pkpgcounter /usr/local/bin/pkpgcounter
+
 RUN chmod 700 /usr/lib/cups/backend/dummy
 RUN chown root:root /usr/lib/cups/backend/dummy
 RUN chmod +x /root/main.sh
