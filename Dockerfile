@@ -4,6 +4,12 @@ LABEL maintainer="Maykon H Facincani <maykon.facincani@uftm.edu.br>"
 LABEL version="2.0"
 LABEL description="CUPS Ready to SiMPres Backend"
 
+ENV ADDRESS *
+
+# Install nodejs
+RUN apt update && apt install -y curl
+RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+
 # Install Packages (basic tools, cups, basic drivers, HP drivers)
 RUN apt-get update \
 && apt-get install -y \
@@ -26,6 +32,7 @@ RUN apt-get update \
   libpqxx-6.2 \
   fontconfig \
   fonts-liberation \
+  nodejs \
 && apt-get clean \
 && rm -rf /var/lib/apt/lists/*
 
@@ -48,6 +55,7 @@ RUN /usr/sbin/cupsd \
 RUN sed -i 's/.*enable\-dbus=.*/enable\-dbus\=no/' /etc/avahi/avahi-daemon.conf
 
 ADD files/main.sh /root/main.sh
+ADD files/healthcheck.js /root/healthcheck.js
 ADD files/dummy /usr/lib/cups/backend/dummy
 ADD files/pkpgcounter-3.50.tar.gz /root/pkpgcounter-3.50.tar.gz
 
@@ -76,5 +84,7 @@ VOLUME /var/spool/cups
 
 EXPOSE 631
 
-CMD ["/root/main.sh"]
+HEALTHCHECK --interval=10s --timeout=2s CMD node /root/healthcheck.js || killall -9 cupsd
+
+ENTRYPOINT "/root/main.sh" /usr/sbin/cupsd -f
 

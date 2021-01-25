@@ -1,4 +1,10 @@
 #!/bin/bash
+
+#
+set -x
+#
+
+
 ## Check if configs exists
 CUPS_CFG="/etc/cups"
 
@@ -36,5 +42,6 @@ if [ -e /mnt/drivers/install.sh ]; then
     /mnt/drivers/install.sh
 fi
 
-# Starts CUPS
-/usr/sbin/cupsd -f
+printf "Drivers Installed\nStarting Cups\n"
+
+$@
