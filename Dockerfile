@@ -27,6 +27,7 @@ RUN apt-get update \
   hplip \
   build-essential \
   python3 \
+  ink \
   snmp \
   python3-pil \
   libpqxx-dev \
