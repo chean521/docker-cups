@@ -64,7 +64,7 @@ ADD files/cups /etc/cups
 RUN cd /root && \
     cd pkpgcounter-3.50.tar.gz && \
     cd pkpgcounter-3.50 && \
-    python setup.py install
+    python3 setup.py install
 
 RUN ln -sf /usr/local/bin/pkpgcounter /usr/bin/pkpgcounter
 
