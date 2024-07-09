@@ -57,16 +57,8 @@ RUN sed -i 's/.*enable\-dbus=.*/enable\-dbus\=no/' /etc/avahi/avahi-daemon.conf
 ADD files/main.sh /root/main.sh
 ADD files/healthcheck.js /root/healthcheck.js
 ADD files/dummy /usr/lib/cups/backend/dummy
-ADD files/pkpgcounter-3.50.tar.gz /root/pkpgcounter-3.50.tar.gz
 
 ADD files/cups /etc/cups
-
-RUN cd /root && \
-    cd pkpgcounter-3.50.tar.gz && \
-    cd pkpgcounter-3.50 && \
-    python3 setup.py install
-
-RUN ln -sf /usr/local/bin/pkpgcounter /usr/bin/pkpgcounter
 
 RUN chmod 700 /usr/lib/cups/backend/dummy
 RUN chown root:root /usr/lib/cups/backend/dummy
