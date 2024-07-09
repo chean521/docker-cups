@@ -26,10 +26,10 @@ RUN apt-get update \
   hp-ppd \
   hplip \
   build-essential \
-  python \
+  python3 \
   snmp \
-  python-pil \
-  libpqxx-6.2 \
+  python3-pil \
+  libpqxx-dev \
   fontconfig \
   fonts-liberation \
   nodejs \
