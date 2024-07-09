@@ -1,4 +1,4 @@
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 
 LABEL maintainer="Maykon H Facincani <maykon.facincani@uftm.edu.br>"
 LABEL version="2.0"
@@ -8,7 +8,7 @@ ENV ADDRESS *
 
 # Install nodejs
 RUN apt update && apt install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
+RUN curl -sL https://deb.nodesource.com/setup_18.x | bash -
 
 # Install Packages (basic tools, cups, basic drivers, HP drivers)
 RUN apt-get update \
